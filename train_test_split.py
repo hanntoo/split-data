@@ -4,16 +4,15 @@ import shutil
 import sys
 
 # Define paths to image folders
-image_path = 'images/all'
-train_path = 'images/train'
-test_path = 'images/test'
+image_path = '/content/Tensorflow/workspace/images/all'
+train_path = '/content/Tensorflow/workspace/images/train'
+test_path = '/content/Tensorflow/workspace/images/test'
 
 # Create train and test directories if they don't exist
 Path(train_path).mkdir(parents=True, exist_ok=True)
 Path(test_path).mkdir(parents=True, exist_ok=True)
 
-# Get list of all images
-# all_files = list(Path(image_path).rglob('*.*'))
+
 # Get list of all images
 jpeg_file_list = [path for path in Path(image_path).rglob('*.jpeg')]
 jpg_file_list = [path for path in Path(image_path).rglob('*.jpg')]
