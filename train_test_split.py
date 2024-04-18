@@ -52,18 +52,24 @@ test_file_groups = file_groups[train_num:]
 train_files = [file for group in train_file_groups for file in group]
 test_files = [file for group in test_file_groups for file in group]
 
+# Function to move files and their corresponding XML files
+def move_files(files, destination):
+    for file in files:
+        base_fn = file.stem
+        xml_fn = base_fn + '.xml'
+        xml_file = file.parent / xml_fn
+        if xml_file.exists():  # Check if corresponding XML file exists
+            shutil.move(file, destination)
+            shutil.move(xml_file, destination)
+            print(f"Moved {file.name} and {xml_file.name} to {destination}")
+        else:
+            print(f"No XML file found for {file.name}, skipping...")
+
 # Move files to train folder
-for file in train_files:
-    shutil.move(file, train_path)
+move_files(train_files, train_path)
 
 # Move files to test folder
-for file in test_files:
-    shutil.move(file, test_path)
-
-# Print details
-print('Total gambar: %d' % len(all_files))
-print('Gambar yang dipindahkan ke train: %d' % len(train_file_groups))
-print('Gambar yang dipindahkan ke test: %d' % len(test_file_groups))
+move_files(test_files, test_path)
 
 # Print details per folder
 for folder in Path(image_path).iterdir():
@@ -72,3 +78,8 @@ for folder in Path(image_path).iterdir():
         folder_train_files = [f for f in train_files if f.parent.name == folder_name]
         folder_test_files = [f for f in test_files if f.parent.name == folder_name]
         print(f"Gambar '{folder_name}' masuk ke train: {len(folder_train_files)} dan test: {len(folder_test_files)}")
+
+# Print details
+print('Total gambar: %d' % len(all_files))
+print('Gambar yang dipindahkan ke train: %d' % len(train_file_groups))
+print('Gambar yang dipindahkan ke test: %d' % len(test_file_groups))
